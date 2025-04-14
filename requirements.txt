@@ -1,3 +1,5 @@
 youtube_transcript_api
 google-generativeai
 ipywidgets
+streamlit
+requests
