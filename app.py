@@ -59,7 +59,7 @@ def analyze_video_callback():
 
         st.markdown(
             f"""
-            <div style="background-color:#fdf4e3; padding:12px; border-radius:8px; border-left:6px solid #ffc107;">
+            <div style="background-color:#fdf4e3; padding:12px; border-radius:8px; border-left:6px solid #ff69b4; color:#333;">
                 <span style="font-size:16px;">🌐 <strong>Transcript Language Detected:</strong> {lang_name.upper()} - {lang.upper()}</span>
             </div>
             """,
