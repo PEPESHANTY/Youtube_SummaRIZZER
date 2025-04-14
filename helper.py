@@ -40,6 +40,7 @@ def get_youtube_transcript(youtube_url):
         return "❌ Error: Invalid YouTube URL. Couldn't extract video ID.", None
 
     # Call your existing transcript fetcher
+    
     return get_all_transcript(video_id)
 
 
