@@ -32,12 +32,37 @@ st.markdown("""
 st.title("🎓 YouTube Video Summarizer")
 
 # --------------------------- Gemini API Key ---------------------------
-api_key = st.text_input("🔑 Enter your Gemini API Key", type="password")
-if not api_key:
-    st.warning("Please enter your API key to continue.", icon="⚠️")
+
+# Session variable to store API key status
+if "api_set" not in st.session_state:
+    st.session_state.api_set = False
+
+# Form with input + button (more stable on iOS/mac)
+with st.form("api_form", clear_on_submit=False):
+    api_key = st.text_input("🔑 Enter your Gemini API Key", type="password")
+    submitted = st.form_submit_button(" Submit Key")
+
+    if submitted:
+        if api_key.strip():
+            configure(api_key=api_key)
+            st.session_state.api_set = True
+        else:
+            st.warning("Please enter a valid API key to continue.", icon="⚠️")
+
+# Stop further execution until API key is provided
+if not st.session_state.api_set:
     st.stop()
-configure(api_key=api_key)
+
+# Load model after setting API key
 model = GenerativeModel("models/gemini-2.0-flash")
+
+
+# api_key = st.text_input("🔑 Enter your Gemini API Key", type="password")
+# if not api_key:
+#     st.warning("Please enter your API key to continue.", icon="⚠️")
+#     st.stop()
+# configure(api_key=api_key)
+# model = GenerativeModel("models/gemini-2.0-flash")
 
 # --------------------------- Analyze Callback ---------------------------
 def analyze_video_callback():
