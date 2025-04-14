@@ -14,12 +14,41 @@ def get_youtube_transcript(youtube_url):
 
 from urllib.parse import urlparse, parse_qs
 
-def get_youtube_transcript(youtube_url):
-    video_id = parse_qs(urlparse(youtube_url).query).get("v")
-    if not video_id or not isinstance(video_id[0], str):
-        return "Error: Invalid YouTube URL. Couldn't extract video ID.", None
+from urllib.parse import urlparse, parse_qs
 
-    return get_all_transcript(video_id[0])  # ✅ Pass the string only
+def extract_video_id(url):
+    """Extracts the video ID from any YouTube URL format (desktop or mobile)."""
+    parsed = urlparse(url)
+
+    # Case 1: Standard desktop link
+    if "youtube.com" in parsed.netloc:
+        query = parse_qs(parsed.query)
+        return query.get("v", [None])[0]
+
+    # Case 2: Short link (youtu.be)
+    if "youtu.be" in parsed.netloc:
+        return parsed.path.strip("/")
+
+    return None
+
+
+def get_youtube_transcript(youtube_url):
+    """Fetches transcript for any YouTube URL, using a robust video ID extractor."""
+    video_id = extract_video_id(youtube_url)
+
+    if not video_id:
+        return "❌ Error: Invalid YouTube URL. Couldn't extract video ID.", None
+
+    # Call your existing transcript fetcher
+    return get_all_transcript(video_id)
+
+
+# def get_youtube_transcript(youtube_url):
+#     video_id = parse_qs(urlparse(youtube_url).query).get("v")
+#     if not video_id or not isinstance(video_id[0], str):
+#         return "Error: Invalid YouTube URL. Couldn't extract video ID.", None
+
+#     return get_all_transcript(video_id[0])  # ✅ Pass the string only
 
 
 from youtube_transcript_api import YouTubeTranscriptApi
