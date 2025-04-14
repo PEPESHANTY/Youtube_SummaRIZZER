@@ -39,15 +39,15 @@ if "api_set" not in st.session_state:
     st.session_state.api_set = False
 
 # Form with input + button (more stable on iOS/mac)
-with st.form("api_form", clear_on_submit=False):
-    api_key = st.text_input("🔑 **Enter your Gemini API Key** ", type="password")
-    st.markdown("""
-    <div style="display:flex; align-items:center; gap:10px; padding-bottom:15px">
-    <strong>⚙️ Test Key for users:</strong> 
-    <code id="copyKey" style="color:#28a745; ">AIzaSyCfPleOdsJTDFEBT6uW72JaHFWonw-6DmI</code>
+# with st.form("api_form", clear_on_submit=False):
+#     api_key = st.text_input("🔑 **Enter your Gemini API Key** ", type="password")
+#     st.markdown("""
+#     <div style="display:flex; align-items:center; gap:10px; padding-bottom:15px">
+#     <strong>⚙️ Test Key for users:</strong> 
+#     <code id="copyKey" style="color:#28a745; ">AIzaSyCfPleOdsJTDFEBT6uW72JaHFWonw-6DmI</code>
     
-    </div>
-    """, unsafe_allow_html=True)
+#     </div>
+#     """, unsafe_allow_html=True)
 
 
 
