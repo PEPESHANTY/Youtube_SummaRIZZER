@@ -1,7 +1,8 @@
 import streamlit as st
 from helper import LANGUAGE_NAMES
 from google.generativeai import GenerativeModel, configure
-from helper import get_youtube_transcript, detect_video_type, generate_prompt
+from helper import get_video_metadata,get_youtube_transcript, detect_video_type, generate_prompt
+from urllib.parse import urlparse, parse_qs
 
 # --------------------------- Style ---------------------------
 st.set_page_config(page_title="🎥 YouTube Learning Assistant", layout="centered")
@@ -76,6 +77,23 @@ def analyze_video_callback():
         if "Error" in transcript:
             st.error(transcript)
             return
+
+        parsed = urlparse(url)
+        video_id = parse_qs(parsed.query).get("v", [None])[0] or parsed.path.strip("/")
+
+        # Get title and channel name
+        title, author = get_video_metadata(video_id)
+
+        # Show title + channel
+        st.markdown(
+            f"""
+            <div style="background-color:#ede7ff; padding:12px; border-radius:8px; border-left:6px solid #4b0055; color:#333;;">
+                <p style="font-size:16px;"><strong>🎬 Title:</strong> {title}</p>
+                <p style="font-size:16px;"><strong>📺 Channel:</strong> {author}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         st.success("Video analyzed successfully!")
         lang_name = LANGUAGE_NAMES.get(lang.lower(), "")

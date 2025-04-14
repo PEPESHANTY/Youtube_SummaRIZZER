@@ -1,7 +1,11 @@
 # helper.py
 
+from youtube_transcript_api._errors import NoTranscriptFound
 from youtube_transcript_api import YouTubeTranscriptApi
 from urllib.parse import urlparse, parse_qs
+import requests
+import re
+
 
 def get_youtube_transcript(youtube_url):
     """Fetches transcript using YouTubeTranscriptApi and returns transcript + language code."""
@@ -11,8 +15,6 @@ def get_youtube_transcript(youtube_url):
     video_id = video_id[0]
     return get_all_transcript(video_id)
 
-
-from urllib.parse import urlparse, parse_qs
 
 from urllib.parse import urlparse, parse_qs
 
@@ -53,8 +55,32 @@ def get_youtube_transcript(youtube_url):
 #     return get_all_transcript(video_id[0])  # ✅ Pass the string only
 
 
-from youtube_transcript_api import YouTubeTranscriptApi
-from youtube_transcript_api._errors import NoTranscriptFound
+
+def get_video_metadata(video_id):
+    """
+    Fetches the YouTube video title and channel name using regex scraping.
+    Returns (title, author) with safe fallback if one of them isn't found.
+    """
+    try:
+        url = f"https://www.youtube.com/watch?v={video_id}"
+        response = requests.get(url)
+        html = response.text
+
+        # Try to find the title
+        title_match = re.search(r'"title":"(.*?)"', html)
+        title = title_match.group(1) if title_match else "Unknown Title"
+
+        # Try to find the channel name
+        author_match = re.search(r'"ownerChannelName":"(.*?)"', html)
+        author = author_match.group(1) if author_match else "Unknown Author"
+
+        return title, author
+
+    except Exception as e:
+        print(f"[Metadata Error] {e}")
+        return "Unknown Title", "Unknown Author"
+
+
 
 def get_all_transcript(video_id):
     """
