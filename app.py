@@ -89,7 +89,22 @@ def analyze_video_callback():
 
         if "Error" in transcript:
             st.error(transcript)
+            st.markdown(
+                """
+                <div style="background-color:#fff3cd; padding:12px; border-radius:8px; border-left:6px solid #ffa502; color:#856404; margin-top:10px;">
+                ⚠️ **Transcript not available.** This could be due to:
+                <ul>
+                    <li>Cloud-hosted IPs being blocked by YouTube (e.g., Streamlit, Colab, Railway)</li>
+                    <li>Too many requests from your IP</li>
+                    <li>Using a playlist or mobile-format link</li>
+                </ul>
+                👉 Try a different video or a direct desktop link like <code>https://www.youtube.com/watch?v=...</code>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
             return
+
 
         parsed = urlparse(url)
         video_id = parse_qs(parsed.query).get("v", [None])[0] or parsed.path.strip("/")
