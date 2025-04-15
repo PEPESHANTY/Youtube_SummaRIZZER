@@ -81,6 +81,7 @@ pip install -r requirements.txt
 
 # 4. Run Streamlit
 streamlit run app.py
+```
 
 ## 🧠 Credits & Collaboration
 Built as part of the Google x Kaggle GenAI Intensive Capstone challenge.
