@@ -97,7 +97,7 @@ def analyze_video_callback():
                 """,
                 unsafe_allow_html=True
             )
-            
+            return
 
 
         parsed = urlparse(url)
